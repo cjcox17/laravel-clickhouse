@@ -109,6 +109,13 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
      * @var array
      */
     protected static $booted = [];
+    
+    /**
+     * Indicates if an exception should be thrown when trying to access a missing attribute on a retrieved model.
+     *
+     * @var bool
+     */
+    protected static $modelsShouldPreventAccessingMissingAttributes = false;
 
     /**
      * Create a new Eloquent model instance.
@@ -720,5 +727,15 @@ abstract class Model implements ArrayAccess, Arrayable, Jsonable, JsonSerializab
     public static function __callStatic($method, $parameters)
     {
         return (new static())->$method(...$parameters);
+    }
+    
+    /**
+     * Determine if accessing missing attributes is disabled.
+     *
+     * @return bool
+     */
+    public static function preventsAccessingMissingAttributes()
+    {
+        return static::$modelsShouldPreventAccessingMissingAttributes;
     }
 }
